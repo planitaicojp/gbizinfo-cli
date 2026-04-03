@@ -1,6 +1,7 @@
 package cmdutil
 
 import (
+	"errors"
 	"os"
 	"path/filepath"
 	"testing"
@@ -222,19 +223,11 @@ func TestNewClient_FlagOverridesEnv(t *testing.T) {
 	}
 }
 
-// helpers for error type assertions
+// helpers for error type assertions using errors.As
 func isValidationError(err error, target **cerrors.ValidationError) bool {
-	ve, ok := err.(*cerrors.ValidationError)
-	if ok && target != nil {
-		*target = ve
-	}
-	return ok
+	return errors.As(err, target)
 }
 
 func isAuthError(err error, target **cerrors.AuthError) bool {
-	ae, ok := err.(*cerrors.AuthError)
-	if ok && target != nil {
-		*target = ae
-	}
-	return ok
+	return errors.As(err, target)
 }

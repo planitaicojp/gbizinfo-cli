@@ -187,3 +187,92 @@ func TestTableFormatterNestedEmpty(t *testing.T) {
 		t.Errorf("should still show parent fields when children empty, got:\n%s", out)
 	}
 }
+
+// Test []*Struct slice fields (pointer elements)
+type ptrChild struct {
+	Label string `json:"label"`
+}
+
+type ptrParent struct {
+	ID       string      `json:"id"`
+	Children []*ptrChild `json:"children"`
+}
+
+func TestTableFormatterPointerSlice(t *testing.T) {
+	items := []ptrParent{
+		{
+			ID: "001",
+			Children: []*ptrChild{
+				{Label: "child-a"},
+				{Label: "child-b"},
+			},
+		},
+	}
+	var buf bytes.Buffer
+	f := New("table")
+	if err := f.Format(&buf, items); err != nil {
+		t.Fatalf("Format() error: %v", err)
+	}
+	out := buf.String()
+	if !strings.Contains(out, "LABEL") {
+		t.Errorf("should expand []*Struct fields, got:\n%s", out)
+	}
+	if !strings.Contains(out, "child-a") || !strings.Contains(out, "child-b") {
+		t.Errorf("missing pointer child data, got:\n%s", out)
+	}
+}
+
+// Test []string fields are joined with "; "
+type taggedItem struct {
+	Name string   `json:"name"`
+	Tags []string `json:"tags"`
+}
+
+func TestTableFormatterStringSlice(t *testing.T) {
+	items := []taggedItem{
+		{Name: "item1", Tags: []string{"go", "cli", "api"}},
+	}
+	var buf bytes.Buffer
+	f := New("table")
+	if err := f.Format(&buf, items); err != nil {
+		t.Fatalf("Format() error: %v", err)
+	}
+	out := buf.String()
+	if !strings.Contains(out, "go; cli; api") {
+		t.Errorf("[]string should be joined with '; ', got:\n%s", out)
+	}
+}
+
+// Test struct with multiple []struct fields: only first is expanded
+type multiSliceParent struct {
+	ID     string        `json:"id"`
+	First  []nestedChild `json:"first"`
+	Second []nestedChild `json:"second"`
+}
+
+func TestTableFormatterMultipleSliceFields(t *testing.T) {
+	items := []multiSliceParent{
+		{
+			ID:     "001",
+			First:  []nestedChild{{Title: "A", Date: "2024-01-01"}},
+			Second: []nestedChild{{Title: "B", Date: "2024-06-01"}},
+		},
+	}
+	var buf bytes.Buffer
+	f := New("table")
+	if err := f.Format(&buf, items); err != nil {
+		t.Fatalf("Format() error: %v", err)
+	}
+	out := buf.String()
+	// First slice should be expanded
+	if !strings.Contains(out, "TITLE") {
+		t.Errorf("first []struct should be expanded, got:\n%s", out)
+	}
+	if !strings.Contains(out, "A") {
+		t.Errorf("first slice data missing, got:\n%s", out)
+	}
+	// Second slice should appear as a scalar column (SECOND header)
+	if !strings.Contains(out, "SECOND") {
+		t.Errorf("second []struct should appear as scalar column, got:\n%s", out)
+	}
+}

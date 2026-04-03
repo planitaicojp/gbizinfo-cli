@@ -7,8 +7,10 @@ import (
 )
 
 // flattenData takes a slice value and returns headers and rows.
-// Nested slice-of-struct fields are expanded: each nested element
-// becomes its own row with the parent's scalar fields repeated.
+// If an element struct contains exactly one slice-of-struct field,
+// that field is expanded: each nested element becomes its own row
+// with the parent's scalar fields repeated. Only the first such
+// slice field is expanded; additional ones are rendered as strings.
 func flattenData(val reflect.Value) (headers []string, rows [][]string) {
 	if val.Len() == 0 {
 		return nil, nil
@@ -26,9 +28,9 @@ func flattenData(val reflect.Value) (headers []string, rows [][]string) {
 
 	for i := 0; i < elemType.NumField(); i++ {
 		ft := elemType.Field(i).Type
-		if ft.Kind() == reflect.Slice && ft.Elem().Kind() == reflect.Struct {
+		if isStructSlice(ft) && sliceIndex < 0 {
 			sliceIndex = i
-			sliceElemType = ft.Elem()
+			sliceElemType = derefType(ft.Elem())
 		} else {
 			scalarIndices = append(scalarIndices, i)
 		}
@@ -51,7 +53,7 @@ func flattenData(val reflect.Value) (headers []string, rows [][]string) {
 
 		scalarVals := make([]string, len(scalarIndices))
 		for j, idx := range scalarIndices {
-			scalarVals[j] = fmt.Sprintf("%v", row.Field(idx).Interface())
+			scalarVals[j] = formatValue(row.Field(idx))
 		}
 
 		if sliceIndex < 0 {
@@ -75,13 +77,43 @@ func flattenData(val reflect.Value) (headers []string, rows [][]string) {
 			record := make([]string, 0, len(headers))
 			record = append(record, scalarVals...)
 			for f := 0; f < child.NumField(); f++ {
-				record = append(record, fmt.Sprintf("%v", child.Field(f).Interface()))
+				record = append(record, formatValue(child.Field(f)))
 			}
 			rows = append(rows, record)
 		}
 	}
 
 	return headers, rows
+}
+
+// isStructSlice returns true if t is a slice whose element type is
+// a struct (or pointer to struct).
+func isStructSlice(t reflect.Type) bool {
+	if t.Kind() != reflect.Slice {
+		return false
+	}
+	return derefType(t.Elem()).Kind() == reflect.Struct
+}
+
+// derefType follows a pointer type to its element type.
+func derefType(t reflect.Type) reflect.Type {
+	if t.Kind() == reflect.Ptr {
+		return t.Elem()
+	}
+	return t
+}
+
+// formatValue converts a reflect.Value to a string suitable for
+// table/CSV output. Slices of primitives are joined with "; ".
+func formatValue(v reflect.Value) string {
+	if v.Kind() == reflect.Slice && !isStructSlice(v.Type()) {
+		parts := make([]string, v.Len())
+		for i := 0; i < v.Len(); i++ {
+			parts[i] = fmt.Sprintf("%v", v.Index(i).Interface())
+		}
+		return strings.Join(parts, "; ")
+	}
+	return fmt.Sprintf("%v", v.Interface())
 }
 
 func jsonTagName(field reflect.StructField) string {
