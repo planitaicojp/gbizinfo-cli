@@ -25,40 +25,20 @@ func (f *TableFormatter) Format(w io.Writer, data any) error {
 		return nil
 	}
 
+	headers, rows := flattenData(val)
+
 	tw := tabwriter.NewWriter(w, 0, 4, 2, ' ', 0)
 
-	elem := val.Index(0)
-	if elem.Kind() == reflect.Ptr {
-		elem = elem.Elem()
+	upper := make([]string, len(headers))
+	for i, h := range headers {
+		upper[i] = strings.ToUpper(h)
 	}
-	elemType := elem.Type()
-
-	headers := make([]string, elemType.NumField())
-	for i := 0; i < elemType.NumField(); i++ {
-		field := elemType.Field(i)
-		name := field.Tag.Get("json")
-		if idx := strings.Index(name, ","); idx != -1 {
-			name = name[:idx]
-		}
-		if name == "" || name == "-" {
-			name = field.Name
-		}
-		headers[i] = strings.ToUpper(name)
-	}
-	if _, err := fmt.Fprintln(tw, strings.Join(headers, "\t")); err != nil {
+	if _, err := fmt.Fprintln(tw, strings.Join(upper, "\t")); err != nil {
 		return err
 	}
 
-	for i := 0; i < val.Len(); i++ {
-		row := val.Index(i)
-		if row.Kind() == reflect.Ptr {
-			row = row.Elem()
-		}
-		fields := make([]string, row.NumField())
-		for j := 0; j < row.NumField(); j++ {
-			fields[j] = fmt.Sprintf("%v", row.Field(j).Interface())
-		}
-		if _, err := fmt.Fprintln(tw, strings.Join(fields, "\t")); err != nil {
+	for _, row := range rows {
+		if _, err := fmt.Fprintln(tw, strings.Join(row, "\t")); err != nil {
 			return err
 		}
 	}

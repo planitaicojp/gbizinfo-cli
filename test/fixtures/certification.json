@@ -1,0 +1,26 @@
+{
+  "hojin-infos": [
+    {
+      "corporate_number": "1010001012345",
+      "name": "株式会社テスト商事",
+      "certification": [
+        {
+          "title": "えるぼし認定（3段階目）",
+          "date_of_approval": "2023-04-01",
+          "target": "女性活躍推進",
+          "category": "認定",
+          "enterprise_scale": "中小企業",
+          "government_departments": "厚生労働省"
+        },
+        {
+          "title": "くるみん認定",
+          "date_of_approval": "2022-10-15",
+          "target": "次世代育成支援",
+          "category": "認定",
+          "enterprise_scale": "中小企業",
+          "government_departments": "厚生労働省"
+        }
+      ]
+    }
+  ]
+}

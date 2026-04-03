@@ -1,0 +1,17 @@
+{
+  "hojin-infos": [
+    {
+      "corporate_number": "1010001012345",
+      "name": "株式会社テスト商事",
+      "patent": [
+        {
+          "title": "データ処理装置およびデータ処理方法",
+          "date_of_application": "2022-08-10",
+          "patent_number": "特許第7000001号",
+          "application_number": "特願2022-123456",
+          "classification_pi": "G06F 16/00"
+        }
+      ]
+    }
+  ]
+}
