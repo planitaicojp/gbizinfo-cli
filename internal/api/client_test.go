@@ -100,7 +100,7 @@ func TestClientUserAgent(t *testing.T) {
 	defer server.Close()
 
 	client := NewClient(server.URL, "token")
-	client.Get("/test", nil)
+	_ = client.Get("/test", nil)
 	if gotUA != UserAgent {
 		t.Errorf("User-Agent = %q, want %q", gotUA, UserAgent)
 	}
