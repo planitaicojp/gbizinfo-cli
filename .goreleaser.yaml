@@ -1,0 +1,53 @@
+version: 2
+
+builds:
+  - binary: gbizinfo
+    ldflags:
+      - -s -w -X github.com/planitaicojp/gbizinfo-cli/cmd.version={{.Version}}
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "checksums.txt"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+brews:
+  - repository:
+      owner: planitaicojp
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    name: gbizinfo
+    homepage: "https://github.com/planitaicojp/gbizinfo-cli"
+    description: "gBizINFO REST API CLI - 経済産業省 法人情報API CLIツール"
+    license: "MIT"
+    install: |
+      bin.install "gbizinfo"
+
+scoops:
+  - repository:
+      owner: planitaicojp
+      name: bucket
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    name: gbizinfo
+    homepage: "https://github.com/planitaicojp/gbizinfo-cli"
+    description: "gBizINFO REST API CLI - 経済産業省 法人情報API CLIツール"
+    license: "MIT"
