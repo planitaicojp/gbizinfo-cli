@@ -35,19 +35,19 @@ brews:
       owner: planitaicojp
       name: homebrew-tap
       token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    name: gbizinfo
     homepage: "https://github.com/planitaicojp/gbizinfo-cli"
     description: "gBizINFO REST API CLI - 経済産業省 法人情報API CLIツール"
     license: "MIT"
     install: |
       bin.install "gbizinfo"
-    test: |
-      system "#{bin}/gbizinfo", "version"
 
 scoops:
   - repository:
       owner: planitaicojp
-      name: scoop-bucket
-      token: "{{ .Env.SCOOP_BUCKET_TOKEN }}"
+      name: bucket
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    name: gbizinfo
     homepage: "https://github.com/planitaicojp/gbizinfo-cli"
     description: "gBizINFO REST API CLI - 経済産業省 法人情報API CLIツール"
     license: "MIT"

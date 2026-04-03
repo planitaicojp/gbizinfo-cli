@@ -7,14 +7,14 @@ gBizINFO（経済産業省 法人情報API）を操作するCLIツール。
 ### Homebrew (macOS / Linux)
 
 ```bash
-brew install planitaicojp/tap/gbizinfo-cli
+brew install planitaicojp/tap/gbizinfo
 ```
 
 ### Scoop (Windows)
 
 ```powershell
-scoop bucket add planitaicojp https://github.com/planitaicojp/scoop-bucket.git
-scoop install gbizinfo-cli
+scoop bucket add planitaicojp https://github.com/planitaicojp/bucket.git
+scoop install gbizinfo
 ```
 
 ### Go
