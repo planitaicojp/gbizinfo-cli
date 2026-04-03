@@ -69,7 +69,12 @@ var setCmd = &cobra.Command{
 		case "token":
 			cfg.Token = value
 		case "format":
-			cfg.Defaults.Format = value
+			switch value {
+			case "json", "table", "csv":
+				cfg.Defaults.Format = value
+			default:
+				return fmt.Errorf("不正な出力形式: %s (使用可能: json, table, csv)", value)
+			}
 		default:
 			return fmt.Errorf("不明な設定キー: %s (使用可能: token, format)", key)
 		}

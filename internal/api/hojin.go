@@ -14,7 +14,7 @@ func (c *Client) Search(params model.SearchParams) (*model.HojinResponse, error)
 		q.Set("name", params.Name)
 	}
 	if params.Address != "" {
-		q.Set("exist_flg", params.Address)
+		q.Set("address", params.Address)
 	}
 	if params.CorporateNumber != "" {
 		q.Set("corporate_number", params.CorporateNumber)

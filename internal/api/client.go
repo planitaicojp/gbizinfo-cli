@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	cerrors "github.com/planitaicojp/gbizinfo-cli/internal/errors"
@@ -93,7 +94,7 @@ func parseAPIError(resp *http.Response) error {
 	case 401, 403:
 		return &cerrors.AuthError{Message: message}
 	case 404:
-		return &cerrors.NotFoundError{Resource: "リソース", ID: ""}
+		return &cerrors.NotFoundError{Resource: "リソース", ID: resp.Request.URL.Path}
 	case 429:
 		return &cerrors.RateLimitError{Message: message}
 	default:
@@ -105,7 +106,7 @@ func debugLogRequest(req *http.Request) {
 	fmt.Fprintf(os.Stderr, "> %s %s\n", req.Method, req.URL.String())
 	for key, vals := range req.Header {
 		for _, v := range vals {
-			if key == "X-Hojininfo-Api-Token" {
+			if strings.EqualFold(key, "X-hojinInfo-api-token") {
 				if len(v) > 4 {
 					v = v[:4] + "******"
 				}

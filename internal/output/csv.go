@@ -24,7 +24,6 @@ func (f *CSVFormatter) Format(w io.Writer, data any) error {
 	}
 
 	writer := csv.NewWriter(w)
-	defer writer.Flush()
 
 	elem := val.Index(0)
 	if elem.Kind() == reflect.Ptr {
@@ -61,5 +60,6 @@ func (f *CSVFormatter) Format(w io.Writer, data any) error {
 			return err
 		}
 	}
-	return nil
+	writer.Flush()
+	return writer.Error()
 }

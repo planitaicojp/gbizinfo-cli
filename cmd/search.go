@@ -41,6 +41,9 @@ var searchCmd = &cobra.Command{
 		}
 
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }

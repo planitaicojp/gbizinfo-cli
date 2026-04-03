@@ -61,6 +61,9 @@ var hojinCmd = &cobra.Command{
 			return err
 		}
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }
@@ -79,6 +82,9 @@ var certificationCmd = &cobra.Command{
 			return err
 		}
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }
@@ -97,6 +103,9 @@ var commendationCmd = &cobra.Command{
 			return err
 		}
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }
@@ -115,6 +124,9 @@ var financeCmd = &cobra.Command{
 			return err
 		}
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }
@@ -133,6 +145,9 @@ var patentCmd = &cobra.Command{
 			return err
 		}
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }
@@ -151,6 +166,9 @@ var procurementCmd = &cobra.Command{
 			return err
 		}
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }
@@ -169,6 +187,9 @@ var subsidyCmd = &cobra.Command{
 			return err
 		}
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }
@@ -187,6 +208,9 @@ var workplaceCmd = &cobra.Command{
 			return err
 		}
 		format := cmdutil.GetFormat(cmd)
+		if format == "json" {
+			return output.New(format).Format(os.Stdout, result)
+		}
 		return output.New(format).Format(os.Stdout, result.Corporations)
 	},
 }

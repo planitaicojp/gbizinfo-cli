@@ -2,6 +2,7 @@ package cmdutil
 
 import (
 	"fmt"
+	"regexp"
 
 	"github.com/spf13/cobra"
 
@@ -9,6 +10,8 @@ import (
 	"github.com/planitaicojp/gbizinfo-cli/internal/config"
 	cerrors "github.com/planitaicojp/gbizinfo-cli/internal/errors"
 )
+
+var corporateNumberRe = regexp.MustCompile(`^\d{13}$`)
 
 const defaultBaseURL = "https://info.gbiz.go.jp/hojin"
 
@@ -55,7 +58,9 @@ func GetFormat(cmd *cobra.Command) string {
 func ExactArgs(n int) cobra.PositionalArgs {
 	return func(cmd *cobra.Command, args []string) error {
 		if len(args) != n {
-			return fmt.Errorf("%d個の引数が必要です（%d個指定されました）\n\n使い方:\n  %s", n, len(args), cmd.UseLine())
+			return &cerrors.ValidationError{
+				Message: fmt.Sprintf("%d個の引数が必要です（%d個指定されました）\n\n使い方:\n  %s", n, len(args), cmd.UseLine()),
+			}
 		}
 		return nil
 	}
@@ -63,10 +68,16 @@ func ExactArgs(n int) cobra.PositionalArgs {
 
 func CorporateNumberArg(cmd *cobra.Command, args []string) (string, error) {
 	if len(args) > 0 {
+		if !corporateNumberRe.MatchString(args[0]) {
+			return "", &cerrors.ValidationError{Field: "corporate_number", Message: "法人番号は13桁の数字で指定してください"}
+		}
 		return args[0], nil
 	}
 	cn, _ := cmd.Flags().GetString("corporate-number")
 	if cn != "" {
+		if !corporateNumberRe.MatchString(cn) {
+			return "", &cerrors.ValidationError{Field: "corporate_number", Message: "法人番号は13桁の数字で指定してください"}
+		}
 		return cn, nil
 	}
 	return "", &cerrors.ValidationError{Field: "corporate_number", Message: "法人番号を指定してください"}
