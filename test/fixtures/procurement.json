@@ -1,0 +1,24 @@
+{
+  "hojin-infos": [
+    {
+      "corporate_number": "1010001012345",
+      "name": "株式会社テスト商事",
+      "procurement": [
+        {
+          "title": "情報システム運用保守業務",
+          "date_of_order": "2024-04-01",
+          "amount": "15000000",
+          "government_departments": "デジタル庁",
+          "joint_signatures": ""
+        },
+        {
+          "title": "ネットワーク機器調達",
+          "date_of_order": "2023-10-01",
+          "amount": "8000000",
+          "government_departments": "総務省",
+          "joint_signatures": "株式会社共同受注"
+        }
+      ]
+    }
+  ]
+}

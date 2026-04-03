@@ -1,0 +1,19 @@
+{
+  "hojin-infos": [
+    {
+      "corporate_number": "1010001012345",
+      "name": "株式会社テスト商事",
+      "subsidy": [
+        {
+          "title": "IT導入補助金2024",
+          "date_of_approval": "2024-06-15",
+          "amount": "2000000",
+          "subsidy_resource": "中小企業庁",
+          "target": "IT導入",
+          "government_departments": "経済産業省",
+          "note": "通常枠"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "totalCount": 2,
+  "totalPage": 1,
+  "pageNumber": 1,
+  "hojin-infos": [
+    {
+      "corporate_number": "1010001012345",
+      "name": "株式会社テスト商事",
+      "kana": "カブシキガイシャテストショウジ",
+      "location": "東京都千代田区丸の内一丁目1番1号",
+      "status": "存続",
+      "update_date": "2024-04-01",
+      "capital_stock": "10000000",
+      "employee_number": "50",
+      "represent_name": "山田太郎",
+      "company_url": "https://example.com",
+      "date_of_establishment": "2010-01-15",
+      "business_summary": "情報通信業"
+    },
+    {
+      "corporate_number": "2010001067890",
+      "name": "合同会社サンプル",
+      "kana": "ゴウドウガイシャサンプル",
+      "location": "大阪府大阪市北区梅田二丁目2番2号",
+      "status": "存続",
+      "update_date": "2024-03-15",
+      "capital_stock": "5000000",
+      "employee_number": "20",
+      "represent_name": "佐藤花子",
+      "company_url": "",
+      "date_of_establishment": "2015-06-01",
+      "business_summary": "卸売業"
+    }
+  ]
+}
